@@ -1,6 +1,9 @@
 import express from "express"
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
+import userRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js"
+
 dotenv.config();
 
 export function ConnectToDatabase() {
@@ -17,6 +20,10 @@ export function ConnectToDatabase() {
 }
 
 const app = express();
+
+app.use(express.json())
+app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/signup", authRoutes)
 
 app.listen(3000, () => {
     console.log("Backend is running on http://127.0.0.1:3000")
