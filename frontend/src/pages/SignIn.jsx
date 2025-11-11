@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInStart, signInSuccess, signinFailure } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [redirect, setRedirect] = useState(false);
-
+  const {loading, error: errorMessage} = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,9 +21,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      setErrorMessage(null);
-
+      dispatch(signInStart)
       const res = await fetch('/api/v1/auth/signin', {
         method: "POST",
         headers: { 'Content-Type': "application/json" },
@@ -31,31 +30,27 @@ export default function SignIn() {
       
       const data = await res.json();
       if (data.success === false) {
-        setErrorMessage(data.message || "Access denied.");
-        setLoading(false);
+        dispatch(signinFailure(data.message || "Access denied."))
         return;
       }
 
-      setLoading(false);
-      setRedirect(true);
+      if (res.ok){
+        dispatch(signInSuccess(data));
+        navigate('/');
+      }
     } catch (error) {
-      setErrorMessage("Connection terminated. Try again.");
-      setLoading(false);
-      console.log(error)
+      dispatch(signinFailure(error.message))
     }
   };
 
   // Auto-dismiss error after 6s
   useEffect(() => {
     if (errorMessage) {
-      const timer = setTimeout(() => setErrorMessage(null), 6000);
+      const timer = setTimeout(() => dispatch(signinFailure(null)), 6000);
       return () => clearTimeout(timer);
     }
-  }, [errorMessage]);
+  }, [errorMessage, dispatch]);
 
-  if (redirect) {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className='min-h-screen bg-black relative overflow-hidden'>
@@ -69,7 +64,7 @@ export default function SignIn() {
       <div className='relative flex p-3 max-w-5xl mx-auto flex-col md:flex-row md:items-center gap-8 min-h-screen'>
 
         {/* Left Side - Branding */}
-        <div className='flex-1 space-y-6'>
+        <div className='flex-1 space-y-6 -mt-64'>
           <div>
             <div className='flex items-center gap-3 group cursor-pointer'>
               <div className='relative'>
@@ -96,21 +91,6 @@ export default function SignIn() {
             <div className='border-l-2 border-green-500 pl-4'>
               <p className='text-lg leading-relaxed font-mono'>
                 &gt; A !secure blog for my learning journey_
-              </p>
-            </div>
-
-            <div className='mt-8 p-4 bg-green-950/20 border border-green-500/30 rounded-lg'>
-              <p className='text-xs font-mono text-green-500/70 leading-relaxed'>
-                <span className="text-green-400">root@safeblog:~$</span> system status --check<br/>
-                <span className="text-green-500">Success</span> They Call me safe, but am i?<br/>
-                <span className="text-green-500">Success</span> Secure connection established<br/>
-                <span className="text-green-500">Success</span> 256-bit AES encryption active<br/>
-                <span className="text-green-500">Success</span> Zero-knowledge proof verified<br/>
-                <span className="text-green-500">Success</span> Multi-factor auth enforced<br/>
-                <span className="text-green-500">Success</span> Intrusion detection: ONLINE<br/>
-                <span className="text-green-500">Success</span> Firewall: HARDENED<br/>
-                <span className="text-green-500">Success</span> Backdoor scan: CLEAN<br/>
-                <span className="text-yellow-400">Warning</span> <span className="animate-pulse">User curiosity detected...</span>
               </p>
             </div>
           </div>
