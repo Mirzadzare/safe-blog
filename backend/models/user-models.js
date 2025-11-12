@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema({
         required: true,   
     },
 
+    profilePicture: {
+        type: String,
+        default: "https://w7.pngwing.com/pngs/842/713/png-transparent-user-profile-computer-icons-others-miscellaneous-face-monochrome.png"
+    }
+
 }, {timestamps: true})
 
 const User = mongoose.model("User", userSchema);
