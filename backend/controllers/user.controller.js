@@ -115,7 +115,6 @@ export const updateProfile = async (req, res) => {
               transformation: { width: 400, height: 400, crop: 'fill' },
             },
             (error, result) => {
-                console.log(error)
               if (error) reject(error);
               else resolve(result);
             }
