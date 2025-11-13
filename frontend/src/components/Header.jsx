@@ -284,7 +284,7 @@ export default function Header() {
                   <button
                     ref={menuButtonRef}
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className={`p-2.5 rounded-lg transition-all duration-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2
+                    className={`block md:hidden p-2.5 rounded-lg transition-all duration-200 items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2
                       ${menuOpen 
                         ? 'bg-emerald-100 text-emerald-700 shadow-sm' 
                         : 'hover:bg-slate-100 text-slate-700'
