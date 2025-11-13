@@ -1,20 +1,16 @@
-// const multer = require('multer');
+import multer from 'multer';
 
-// // Use memory storage for Cloudinary
-// const storage = multer.memoryStorage();
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(file.originalname.toLowerCase().split('.').pop());
+    if (mimetype && extname) return cb(null, true);
+    cb(new Error('Only .png, .jpg, .jpeg, .gif allowed!'));
+  },
+}).single('profilePicture');
 
-// const fileFilter = (req, file, cb) => {
-//   if (file.mimetype.startsWith('image/')) {
-//     cb(null, true);
-//   } else {
-//     cb(new Error('Only images allowed'), false);
-//   }
-// };
-
-// const upload = multer({
-//   storage: storage,
-//   limits: { fileSize: 2 * 1024 * 1024 },
-//   fileFilter: fileFilter
-// });
-
-// module.exports = upload;
+export default upload;

@@ -1,6 +1,6 @@
 import { errorHandler } from "../utils/error.js";
 import User from "../models/user-models.js";
-import multer from 'multer';
+import upload from '../utils/upload.js';
 import cloudinary from '../utils/cloudinary.js';
 import bcryptjs from "bcryptjs";
 
@@ -86,19 +86,6 @@ export const signout = async (req, res, next) => {
     
 }
 
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
-  fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(file.originalname.toLowerCase().split('.').pop());
-    if (mimetype && extname) return cb(null, true);
-    cb(new Error('Only .png, .jpg, .jpeg, .gif allowed!'));
-  },
-}).single('profilePicture');
-
 export const updateProfile = async (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
@@ -158,7 +145,7 @@ export const updateProfile = async (req, res) => {
           profilePicture: user.profilePicture,
         },
       });
-      
+
     } catch (error) {
       console.error('Update profile error:', error);
       res.status(500).json({ success: false, message: 'Server error' });
