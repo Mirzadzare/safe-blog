@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
 
 // OAuth Component
 <OAuth />
@@ -20,6 +21,13 @@ export default function SignUp() {
       [e.target.id]: e.target.value
     });
   };
+
+  const navigate = useNavigate();
+  const { currentUser } = useSelector(state => state.user);
+  // If user already signed in, redirect to dashboard
+  useEffect(() => {
+    if (currentUser) navigate('/profile');
+  }, [currentUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -12,7 +12,7 @@ export default function SignIn() {
 
   // If user already signed in, redirect to dashboard
   useEffect(() => {
-    if (currentUser) navigate('/dashboard');
+    if (currentUser) navigate('/profile');
   }, [currentUser, navigate]);
 
   const handleChange = (e) => {
@@ -39,7 +39,7 @@ export default function SignIn() {
       }
 
       dispatch(signInSuccess(data));
-      navigate('/dashboard');
+      navigate('/profile');
     } catch (error) {
       dispatch(signinFailure(error.message));
     }

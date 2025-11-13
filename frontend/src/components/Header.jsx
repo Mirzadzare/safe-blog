@@ -57,15 +57,15 @@ export default function Header() {
   return (
     <header 
       ref={headerRef} 
-      className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50 shadow-sm"
+      className="bg-white/90 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50 shadow-sm"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo - Left */}
           <Link 
             to="/" 
-            className="flex items-center gap-2.5 group transition-all"
+            className="flex items-center gap-2.5 group transition-all flex-shrink-0"
             aria-label="SafeBlog Home"
           >
             <div className="relative">
@@ -77,34 +77,34 @@ export default function Header() {
               </div>
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent group-hover:from-emerald-600 group-hover:to-teal-600 transition-all duration-200">
-              SafeBlog
+              !SafeBlog
             </span>
           </Link>
 
           {/* Center Navigation - Desktop Only */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2" aria-label="Main navigation">
             <Link 
               to="/" 
-              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               Home
             </Link>
             <Link 
               to="/about" 
-              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               About
             </Link>
             <Link 
               to="/projects" 
-              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              className="px-4 py-2 text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
               Projects
             </Link>
           </nav>
 
           {/* Right Side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-shrink-0">
 
             {currentUser ? (
               <>
@@ -125,25 +125,25 @@ export default function Header() {
                       <img 
                         src={currentUser.profilePicture} 
                         alt={`${currentUser.username}'s profile`}
-                        className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shadow-md group-hover:border-emerald-600 transition-all" 
+                        className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 shadow-md group-hover:border-emerald-600 group-hover:shadow-lg transition-all" 
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-all">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all">
                         {currentUser.username?.[0]?.toUpperCase() || 'U'}
                       </div>
                     )}
-                    <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full transition-transform duration-200 ${profileMenuOpen ? 'scale-110' : ''}`}></div>
+                    <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full transition-transform duration-200 ${profileMenuOpen ? 'scale-110' : ''}`}></div>
                   </button>
 
                   {/* Profile Dropdown */}
                   {profileMenuOpen && (
                     <div 
-                      className="absolute top-full right-0 mt-2 w-72 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-72 bg-white border border-slate-200 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                       role="menu"
                       aria-orientation="vertical"
                     >
                       {/* User Info Header */}
-                      <div className="px-5 py-4 bg-gradient-to-br from-slate-50 to-white border-b border-slate-100">
+                      <div className="px-5 py-4 bg-gradient-to-br from-emerald-50 to-teal-50 border-b border-slate-200">
                         <div className="flex items-center gap-3">
                           {currentUser.profilePicture ? (
                             <img 
@@ -158,17 +158,17 @@ export default function Header() {
                           )}
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-slate-900 truncate">@{currentUser.username}</p>
-                            <p className="text-sm text-slate-500 truncate">{currentUser.email}</p>
+                            <p className="text-sm text-slate-600 truncate">{currentUser.email}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Menu Items */}
-                      <div className="py-1.5">
+                      <div className="py-2">
                         <Link
                           to="/profile"
                           onClick={() => setProfileMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,7 +181,7 @@ export default function Header() {
                             handleSignOut();
                             setProfileMenuOpen(false);
                           }}
-                          className="w-full flex items-center gap-3 px-5 py-2.5 text-red-600 hover:bg-red-50 font-medium transition-colors duration-150 text-left"
+                          className="w-full flex items-center gap-3 px-5 py-3 text-red-600 hover:bg-red-50 font-medium transition-colors duration-150 text-left"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,8 +194,8 @@ export default function Header() {
                   )}
                 </div>
 
-                {/* Hamburger Menu Button - Logged In */}
-                <div className="relative">
+                {/* Hamburger Menu Button - Logged In (Mobile Only) */}
+                <div className="relative md:hidden">
                   <button
                     ref={menuButtonRef}
                     onClick={() => {
@@ -223,15 +223,15 @@ export default function Header() {
                   {/* Main Menu Dropdown */}
                   {menuOpen && (
                     <div 
-                      className="absolute top-full right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                       role="menu"
                       aria-orientation="vertical"
                     >
-                      <nav className="py-1.5">
+                      <nav className="py-2">
                         <Link
                           to="/"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +242,7 @@ export default function Header() {
                         <Link
                           to="/about"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,7 +253,7 @@ export default function Header() {
                         <Link
                           to="/projects"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,15 +305,15 @@ export default function Header() {
                   {/* Navigation Dropdown - Not Logged In */}
                   {menuOpen && (
                     <div 
-                      className="absolute top-full right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                       role="menu"
                       aria-orientation="vertical"
                     >
-                      <nav className="py-1.5">
+                      <nav className="py-2">
                         <Link
                           to="/"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,7 +324,7 @@ export default function Header() {
                         <Link
                           to="/about"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,7 +335,7 @@ export default function Header() {
                         <Link
                           to="/projects"
                           onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-3 px-5 py-2.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
+                          className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -344,11 +344,11 @@ export default function Header() {
                           Projects
                         </Link>
                         
-                        <div className="border-t border-slate-100 mt-1.5 pt-1.5">
+                        <div className="border-t border-slate-100 mt-2 pt-2">
                           <Link
                             to="/sign-in"
                             onClick={() => setMenuOpen(false)}
-                            className="flex items-center gap-3 px-5 py-2.5 text-emerald-600 hover:bg-emerald-50 font-semibold transition-colors duration-150"
+                            className="flex items-center gap-3 px-5 py-3 text-emerald-600 hover:bg-emerald-50 font-semibold transition-colors duration-150"
                             role="menuitem"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
