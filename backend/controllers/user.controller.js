@@ -1,3 +1,167 @@
-export const getUsers = (req, res) => {
-    res.send({"Hi": true})
+import { errorHandler } from "../utils/error.js";
+import User from "../models/user-models.js";
+import multer from 'multer';
+import cloudinary from '../utils/cloudinary.js';
+import bcryptjs from "bcryptjs";
+
+export const changePassword = async (req, res) => {
+    try {
+
+        if (!req.body){
+            return res.status(400).json({"message": "email, newPassword are required."});
+        }
+
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword || currentPassword==="" || newPassword ===""){
+            return res.status(400).json({"message": "All fields are required."});
+        }
+
+        const userId = req.userData.id
+
+        const user = await User.findById(userId)
+
+        if (!user) {
+            return res.status(403).json({"message":"Authentication Failed."})
+        }
+
+        // Check Current Password
+        const validPassword = bcryptjs.compareSync(currentPassword, user.password)
+
+        if (!validPassword){
+                return res.status(403).json({"message":"The Current Password is wrong."})
+        }
+
+        const hashedPassword = bcryptjs.hashSync(newPassword, 10);
+        
+        const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: { password: hashedPassword } },
+        { new: true }
+        );
+
+        if (!updatedUser) {
+        console.log("User not found");
+        return null;
+        }
+
+        return res.status(200).json({"message":`Password updated successfully: ${updatedUser._id}`});
+
+    } catch (error) {
+        console.log(error)
+    }
+ 
 }
+
+export const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.userData.id
+        const user = await User.findById(userId)
+
+        if (!user) {
+                return next(errorHandler(403, "Authentication Failed."))
+            }
+
+        const deletedUser = await User.findByIdAndDelete(userId)
+
+        if (!deletedUser) {
+            console.log("User not found!");
+            return null;
+            }
+
+        return res.status(200).json({"message":`User Deleted successfully: ${deletedUser._id}`});
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+export const signout = async (req, res, next) => {
+
+    try {
+        res.clearCookie("access_token").status(200).json({"message":"User has been signed out."})
+    } catch (error) {
+        next(error)
+    }
+    
+}
+
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(file.originalname.toLowerCase().split('.').pop());
+    if (mimetype && extname) return cb(null, true);
+    cb(new Error('Only .png, .jpg, .jpeg, .gif allowed!'));
+  },
+}).single('profilePicture');
+
+export const updateProfile = async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+
+    try {
+      const userId = req.userData.id;
+      const { username } = req.body;
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      // Update username
+      if (username && username !== user.username) {
+        user.username = username;
+      }
+
+      // Handle profile picture
+      if (req.file) {
+        const result = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: 'profile-pictures',
+              transformation: { width: 400, height: 400, crop: 'fill' },
+            },
+            (error, result) => {
+                console.log(error)
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          stream.end(req.file.buffer);
+        });
+
+        // Delete old image from Cloudinary
+
+        if (user.profilePicture) {
+          const publicId = user.profilePicture.split('/').pop().split('.')[0];
+          await cloudinary.uploader.destroy(`profile-pictures/${publicId}`);
+        }
+
+        user.profilePicture = result.secure_url;
+      }
+
+      await user.save();
+
+      res.json({
+        success: true,
+        message: 'Profile updated successfully',
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          profilePicture: user.profilePicture,
+        },
+      });
+      
+    } catch (error) {
+      console.error('Update profile error:', error);
+      res.status(500).json({ success: false, message: 'Server error' });
+    }
+  });
+};

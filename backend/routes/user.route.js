@@ -1,8 +1,21 @@
 import express from "express"
-import { getUsers } from "../controllers/user.controller.js"
+import { changePassword, deleteAccount, signout, updateProfile } from "../controllers/user.controller.js"
+import { checkAuth } from "../middleware/checkAuth.js";
 
 const Router = express.Router();
 
-Router.route("/").get(getUsers)
+Router.route("/")
+.delete(checkAuth, deleteAccount)
+
+Router.route("/password")
+.put(checkAuth, changePassword)
+
+Router.route("/profile")
+.put(checkAuth, updateProfile)
+
+Router.route("/signout")
+.post(signout)
+
+// Router.route("/profile/upload").put(uploadImage)
 
 export default Router;

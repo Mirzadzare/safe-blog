@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import Projects from './pages/Projects'
 import PrivateRoute from './components/PrivateRoute'
 import Profile from './pages/Profile'
+import Toast from './components/Toast'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             </Route>
             <Route path='/projects' element={<Projects />} />
           </Routes>
+          <Toast />
         </main>
         
         <Footer />

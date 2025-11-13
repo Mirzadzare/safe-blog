@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from "../redux/user/userSlice";
 import { Link, useNavigate } from 'react-router-dom';
-import { signinFailure } from '../redux/user/userSlice';
+import { toast } from "react-toastify";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,10 +18,21 @@ export default function Header() {
 
   const handleSignOut = async () => {
     try {
-      dispatch(signinFailure());
-      navigate('/sign-in');
+      const res = await fetch("/api/v1/users/signout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res.ok) throw new Error("Sign out failed");
+
+      dispatch(signOut());
+
+      toast.success("Signed out successfully!");
+      navigate("/sign-in");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Could not sign out. Try again.");
     }
   };
 

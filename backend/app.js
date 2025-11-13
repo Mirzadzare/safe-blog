@@ -1,12 +1,12 @@
 import express from "express"
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js"
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json())
-app.use("/api/v1/users", userRoutes)
-app.use("/api/v1/auth", authRoutes)
+app.use(cookieParser());
 
 // Small Middleware for Error handling
 app.use((err, req, res, next) => {
@@ -20,5 +20,8 @@ app.use((err, req, res, next) => {
 
     next();
 })
+
+app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/auth", authRoutes)
 
 export default app;

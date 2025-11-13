@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import OAuth from '../components/OAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { signInStart, signInSuccess, signinFailure } from '../redux/user/userSlice'; // adjust path
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { loading, error: errorMessage, currentUser } = useSelector(state => state.user);
+  const { loading, currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,35 +23,35 @@ export default function SignIn() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(signInStart());
-    try {
-      const res = await fetch('/api/v1/auth/signin', {
-        method: "POST",
-        headers: { 'Content-Type': "application/json" },
-        body: JSON.stringify(formData),
-      });
-      
-      const data = await res.json();
-      if (!res.ok || data.success === false) {
-        dispatch(signinFailure(data.message || "Access denied."));
-        return;
-      }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  dispatch(signInStart());
 
-      dispatch(signInSuccess(data));
-      navigate('/profile');
-    } catch (error) {
-      dispatch(signinFailure(error.message));
-    }
-  };
+  try {
+    const res = await fetch('/api/v1/auth/signin', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-  useEffect(() => {
-    if (errorMessage) {
-      const timer = setTimeout(() => dispatch(signinFailure(null)), 6000);
-      return () => clearTimeout(timer);
+    const data = await res.json();
+
+    if (!res.ok || data.success === false) {
+      toast.error(data.message || "Sign In Failed.");
+      dispatch(signInFailure());
+      return;
     }
-  }, [errorMessage, dispatch]);
+
+    dispatch(signInSuccess(data));
+    toast.success("Signed in successfully!");
+    navigate('/profile');
+
+  } catch (error) {
+    dispatch(signInFailure());
+    console.log(error)
+    toast.error("Something went wrong.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center p-4">
@@ -71,18 +72,6 @@ export default function SignIn() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          
-          {/* Error Message */}
-          {errorMessage && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p className="text-sm text-red-700">{errorMessage}</p>
-              </div>
-            </div>
-          )}
 
           {/* OAuth Buttons */}
           <OAuth />

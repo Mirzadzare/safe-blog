@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import OAuth from '../components/OAuth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // OAuth Component
 <OAuth />
@@ -23,6 +24,7 @@ export default function SignUp() {
   };
 
   const navigate = useNavigate();
+    const [successMessage, setSuccessMessage] = useState(null);
   const { currentUser } = useSelector(state => state.user);
   // If user already signed in, redirect to dashboard
   useEffect(() => {
@@ -66,12 +68,63 @@ export default function SignUp() {
 
   if (redirect) {
     // Handle redirect in your actual app with React Router
-    alert('Account created! Redirecting to sign in...');
+    toast.success("Account created! Redirecting to sign in..")
+    navigate("/sign-in")
     return null;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center p-4">
+      {/* Fixed Toast Notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-3 max-w-md w-full px-4">
+        {errorMessage && (
+          <div className="bg-white border-l-4 border-red-500 rounded-lg shadow-2xl p-4 animate-in slide-in-from-right duration-300">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-bold text-red-900 mb-1">Error</h4>
+                <p className="text-sm text-red-700">{errorMessage}</p>
+              </div>
+              <button
+                onClick={() => setErrorMessage(null)}
+                className="flex-shrink-0 text-red-400 hover:text-red-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="bg-white border-l-4 border-green-500 rounded-lg shadow-2xl p-4 animate-in slide-in-from-right duration-300">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-bold text-green-900 mb-1">Success</h4>
+                <p className="text-sm text-green-700">{successMessage}</p>
+              </div>
+              <button
+                onClick={() => setSuccessMessage(null)}
+                className="flex-shrink-0 text-green-400 hover:text-green-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="w-full max-w-md">
         
         {/* Logo */}
@@ -90,17 +143,6 @@ export default function SignUp() {
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
           
-          {/* Error Message */}
-          {errorMessage && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p className="text-sm text-red-700">{errorMessage}</p>
-              </div>
-            </div>
-          )}
 
           {/* OAuth Buttons */}
           <OAuth />
