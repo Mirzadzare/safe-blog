@@ -28,7 +28,7 @@ export default function SignUp() {
   const { currentUser } = useSelector(state => state.user);
   // If user already signed in, redirect to dashboard
   useEffect(() => {
-    if (currentUser) navigate('/profile');
+    if (currentUser) navigate('/dashboard?tab=profile');
   }, [currentUser, navigate]);
 
   const handleSubmit = async (e) => {

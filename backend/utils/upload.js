@@ -11,6 +11,6 @@ const upload = multer({
     if (mimetype && extname) return cb(null, true);
     cb(new Error('Only .png, .jpg, .jpeg, .gif allowed!'));
   },
-}).single('profilePicture');
+}).single('image');
 
 export default upload;

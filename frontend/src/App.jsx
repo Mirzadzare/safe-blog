@@ -7,8 +7,11 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Projects from './pages/Projects'
 import PrivateRoute from './components/PrivateRoute'
-import Profile from './pages/Profile'
+import Dashboard from './pages/Dashboard'
 import Toast from './components/Toast'
+import CreatePost from './pages/CreatePost'
+import UpdatePost from './pages/UpdatePost'
+import AdminPrivateRoutes from './components/AdminPrivateRoutes'
 
 export default function App() {
   return (
@@ -23,10 +26,14 @@ export default function App() {
             <Route path='/sign-in' element={<SignIn />} />
             <Route path='/sign-up' element={<SignUp />} />
             <Route element={<PrivateRoute />}>
-            <Route path='/profile' element={<Profile />} />
+              <Route path='/dashboard' element={<Dashboard />} />
             </Route>
-            <Route path='/projects' element={<Projects />} />
-          </Routes>
+            <Route element={<AdminPrivateRoutes />}>
+              <Route path='/create-post' element={<CreatePost />} />
+              <Route path='/update-post/:postId' element={<UpdatePost />} />
+            </Route>
+              <Route path='/projects' element={<Projects />} />
+            </Routes>
           <Toast />
         </main>
         

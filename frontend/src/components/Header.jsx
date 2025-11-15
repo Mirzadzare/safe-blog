@@ -178,7 +178,7 @@ export default function Header() {
                       {/* Menu Items */}
                       <div className="py-2">
                         <Link
-                          to="/profile"
+                          to="/dashboard?tab=profile"
                           onClick={() => setProfileMenuOpen(false)}
                           className="flex items-center gap-3 px-5 py-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 font-medium transition-colors duration-150"
                           role="menuitem"

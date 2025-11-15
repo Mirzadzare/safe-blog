@@ -13,7 +13,7 @@ export default function SignIn() {
 
   // If user already signed in, redirect to dashboard
   useEffect(() => {
-    if (currentUser) navigate('/profile');
+    if (currentUser) navigate('/dashboard?tab=profile');
   }, [currentUser, navigate]);
 
   const handleChange = (e) => {
@@ -44,7 +44,7 @@ export default function SignIn() {
 
     dispatch(signInSuccess(data));
     toast.success("Signed in successfully!");
-    navigate('/profile');
+    navigate('/dashboard?tab=profile');
 
   } catch (error) {
     dispatch(signInFailure());

@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: "https://w7.pngwing.com/pngs/842/713/png-transparent-user-profile-computer-icons-others-miscellaneous-face-monochrome.png"
-    }
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
 
 }, {timestamps: true})
 
