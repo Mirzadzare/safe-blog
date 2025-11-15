@@ -56,7 +56,7 @@ export default function UsersTab() {
 
   const handleDeleteUser = async () => {
     try {
-      const res = await fetch(`/api/v1/users/delete/${userToDelete}`, {
+      const res = await fetch(`/api/v1/users/${userToDelete}`, {
         method: 'DELETE',
       });
       const data = await res.json();

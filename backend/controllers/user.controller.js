@@ -196,3 +196,30 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 }
+
+export const deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.id?.trim();
+        const isAdmin = req.userData.isAdmin;
+
+        if (!isAdmin){
+          throw new Error("Only Admin Can Do this action!")
+        }
+
+        if (!userId) {
+          throw new Error("UserId is required.")
+        }
+
+        const deletedUser = await User.findByIdAndDelete(userId)
+
+        if (!deletedUser) {
+            return res.status(404).json({ success:false, message:"User not found or not deleted" });
+            }
+
+        return res.status(200).json({"message":`User Deleted successfully: ${deletedUser._id}`});
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+
+}
