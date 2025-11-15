@@ -9,8 +9,9 @@ import AccountTab from "../components/dashboardTabs/AccountTab";
 import SecurityTab from "../components/dashboardTabs/SecurityTab";
 import PostsTab from "../components/dashboardTabs/PostsTab";
 import OverviewTab from "../components/dashboardTabs/OverviewTab";
+import UsersTab from "../components/dashboardTabs/UsersTab";
 
-const VALID_TABS = ["overview", "home", "account", "security", "posts"];
+const VALID_TABS = ["overview", "home", "account", "security", "posts", "users"];
 
 export default function Overview() {
   const { currentUser } = useSelector((state) => state.user);
@@ -23,7 +24,8 @@ export default function Overview() {
   const getValidTab = () => {
     const tab = urlTab?.toLowerCase();
     if (tab && VALID_TABS.includes(tab)) {
-      if (tab === "posts" && !currentUser?.isAdmin) return "overview";
+      if (tab === "posts" && !currentUser?.isAdmin) return "overview"
+      if (tab === "users" && !currentUser?.isAdmin) return "overview";
       return tab;
     }
     return "overview";
@@ -124,6 +126,7 @@ export default function Overview() {
             {activeTab === "account" && <AccountTab />}
             {activeTab === "security" && <SecurityTab />}
             {activeTab === "posts" && currentUser?.isAdmin && <PostsTab />}
+            {activeTab === "users" && currentUser?.isAdmin && <UsersTab />}
           </div>
         </main>
       </div>

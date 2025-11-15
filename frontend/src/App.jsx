@@ -12,6 +12,8 @@ import Toast from './components/Toast'
 import CreatePost from './pages/CreatePost'
 import UpdatePost from './pages/UpdatePost'
 import AdminPrivateRoutes from './components/AdminPrivateRoutes'
+import PostsTab from './components/dashboardTabs/PostsTab'
+import UsersTab from './components/dashboardTabs/UsersTab'
 
 export default function App() {
   return (
@@ -31,6 +33,8 @@ export default function App() {
             <Route element={<AdminPrivateRoutes />}>
               <Route path='/create-post' element={<CreatePost />} />
               <Route path='/update-post/:postId' element={<UpdatePost />} />
+              <Route path='/posts' element={<PostsTab />} />
+              <Route path='/users' element={<UsersTab />} />
             </Route>
               <Route path='/projects' element={<Projects />} />
             </Routes>

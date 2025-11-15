@@ -1,8 +1,10 @@
 import express from "express"
-import { changePassword, deleteAccount, signout, updateProfile } from "../controllers/user.controller.js"
+import { changePassword, deleteAccount, signout, updateProfile, getUsers } from "../controllers/user.controller.js"
 import { checkAuth } from "../middleware/checkAuth.js";
 
 const Router = express.Router();
+Router.route("/")
+.get(checkAuth, getUsers)
 
 Router.route("/")
 .delete(checkAuth, deleteAccount)
