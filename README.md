@@ -1,4 +1,4 @@
-# !safeblog
+# !safe-blog
 
 A modern blog platform built for learning **secure web architecture**. This project is constantly developed, tested, and pentested by me to improve my security skills.
 
