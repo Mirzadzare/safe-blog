@@ -1,6 +1,12 @@
 # !safe-blog
 
 A modern blog platform built for learning **secure web architecture**. This project is constantly developed, tested, and pentested by me to improve my security skills.
+## Demo
+<img width="2288" height="1226" alt="Screenshot 2025-11-18 at 12 44 31 AM" src="https://github.com/user-attachments/assets/34839f10-d406-4f5e-b540-c74c34e83a89" />
+<img width="2288" height="1226" alt="Screenshot 2025-11-18 at 12 45 36 AM" src="https://github.com/user-attachments/assets/a16ab261-d959-4d11-b8bf-f31a36dc5243" />
+<img width="2288" height="1226" alt="Screenshot 2025-11-18 at 12 45 41 AM" src="https://github.com/user-attachments/assets/afa203c0-df24-40f0-b1ed-88b9e4f40dfa" />
+<img width="2288" height="1226" alt="Screenshot 2025-11-18 at 12 45 46 AM" src="https://github.com/user-attachments/assets/9336f985-1513-48d7-ba32-5ce41ccc82fa" />
+<img width="2288" height="1226" alt="Screenshot 2025-11-18 at 12 48 57 AM" src="https://github.com/user-attachments/assets/370bbe7e-1949-4fd0-8858-24bcc9aeafb5" />
 
 ## Features
 
