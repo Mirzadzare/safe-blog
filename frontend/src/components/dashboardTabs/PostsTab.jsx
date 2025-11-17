@@ -16,10 +16,8 @@ import {
 } from 'lucide-react';
 
 export default function PostsTab() {
-  const { currentUser } = useSelector((s) => s.user);
-  const navigate = useNavigate();
 
-  // ───────── State ─────────
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
@@ -38,7 +36,6 @@ export default function PostsTab() {
   const PER_PAGE = 12;
   const observer = useRef();
 
-  // ───────── Query Builder ─────────
   const buildQuery = useCallback(() => {
     const q = new URLSearchParams();
     q.append('limit', PER_PAGE);
@@ -51,7 +48,6 @@ export default function PostsTab() {
     return q.toString();
   }, [page, sort, searchTerm, category]);
 
-  // ───────── Fetch Posts ─────────
   const fetchPosts = useCallback(
     async (reset = false) => {
       if (!hasMore && !reset) return;
@@ -78,7 +74,6 @@ export default function PostsTab() {
     [buildQuery, hasMore]
   );
 
-  // ───────── Reset on Filters ─────────
   useEffect(() => {
     setPosts([]);
     setPage(1);
@@ -86,7 +81,6 @@ export default function PostsTab() {
     fetchPosts(true);
   }, [searchTerm, category, sort]);
 
-  // ───────── Infinite Scroll ─────────
   const lastRef = useCallback(
     (node) => {
       if (loading || searching) return;
@@ -107,7 +101,6 @@ export default function PostsTab() {
     if (page > 1) fetchPosts();
   }, [page]);
 
-  // ───────── Delete Post ─────────
   const openDeleteModal = (post) => {
     setPostToDelete(post);
     setShowDeleteModal(true);
@@ -133,7 +126,6 @@ export default function PostsTab() {
     }
   };
 
-  // ───────── Debounced Search ─────────
   const debouncedSearch = useMemo(
     () => debounce((v) => setSearchTerm(v), 500),
     []
@@ -145,7 +137,6 @@ export default function PostsTab() {
     debouncedSearch(v);
   };
 
-  // ───────── Loading Skeleton ─────────
   const LoadingSkeleton = () => (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {[...Array(6)].map((_, i) => (

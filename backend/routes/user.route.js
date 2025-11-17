@@ -21,6 +21,4 @@ Router.route("/profile")
 Router.route("/signout")
 .post(signout)
 
-// Router.route("/profile/upload").put(uploadImage)
-
 export default Router;

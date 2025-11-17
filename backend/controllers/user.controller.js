@@ -1,8 +1,9 @@
 import { errorHandler } from "../utils/error.js";
-import User from "../models/user-models.js";
+import User from "../models/user.models.js";
 import upload from '../utils/upload.js';
 import cloudinary from '../utils/cloudinary.js';
 import bcryptjs from "bcryptjs";
+import Comment from "../models/comment.models.js";
 
 export const changePassword = async (req, res) => {
     try {
@@ -215,6 +216,9 @@ export const deleteUser = async (req, res) => {
         if (!deletedUser) {
             return res.status(404).json({ success:false, message:"User not found or not deleted" });
             }
+        
+        // Also delete User's comment
+        const deleteComments = await Comment.deleteMany({ userId: userId})
 
         return res.status(200).json({"message":`User Deleted successfully: ${deletedUser._id}`});
 

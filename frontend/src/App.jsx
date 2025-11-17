@@ -14,6 +14,7 @@ import UpdatePost from './pages/UpdatePost'
 import AdminPrivateRoutes from './components/AdminPrivateRoutes'
 import PostsTab from './components/dashboardTabs/PostsTab'
 import UsersTab from './components/dashboardTabs/UsersTab'
+import Post from './pages/Post'
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
               <Route path='/users' element={<UsersTab />} />
             </Route>
               <Route path='/projects' element={<Projects />} />
+              <Route path='/post/:postSlug' element={<Post />} />
             </Routes>
           <Toast />
         </main>

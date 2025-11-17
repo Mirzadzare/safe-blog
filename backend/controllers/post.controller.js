@@ -1,4 +1,4 @@
-import Post from "../models/post-models.js";
+import Post from "../models/post.models.js";
 import cloudinary from '../utils/cloudinary.js';
 
 export const createPost = async (req, res) => {
