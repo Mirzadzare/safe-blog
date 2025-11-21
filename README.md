@@ -64,7 +64,7 @@ To set up and run the !Safe-Blog project, follow these steps:
 
 #### Clone the repository:
 ```bash
-git clone https://github.com/Spix0r/safe-blog.git
+git clone https://github.com/Mirzadzare/safe-blog.git
 cd FunPark
 ```
 #### Install dependencies:
